@@ -1,4 +1,4 @@
-Rapi is a simple subtitle dowloader written in Ruby.
+Rapi is a simple subtitle dowloader written in Ruby. Based on Napi project and python script napi.
 
 Usage:
 
@@ -6,8 +6,8 @@ ruby rapi.rb file_name
 ruby rapi.rb -srt file_name
 
 Dependency:
-
-p7zip
+- ruby
+- p7zip
 
 Authors:
 - Oskar Gotar Szrajer
