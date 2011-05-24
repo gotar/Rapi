@@ -13,10 +13,10 @@ class Rapi
     File.open('napisy.7z','w') do |f|
       f.write(open(url).read)
     end
-    `7z x -y -so -piBlm8NTigvru0Jr0 napisy.7z 2>/dev/null > "#{output_file('txt')}"`
+    `/usr/bin/7z x -y -so -piBlm8NTigvru0Jr0 napisy.7z 2>/dev/null > "#{output_file('txt')}"`
     `rm napisy.7z`
     if File.size?(output_file('txt')).nil?
-      puts "Nie mozna znalezc napisow dla #{@avi_file_path}"
+      puts "Nie można znaleźć napisów dla #{@avi_file_path}"
     else
       puts "Pobrano napisy dla #{@avi_file_path}"
       return output_file('txt')
@@ -60,11 +60,16 @@ class Rapi
   end
 end
 
-txt2srt = "#{File.dirname(__FILE__)}/txt2srt-1.0.8.jar"
-
-txt_files = ARGV.map { |arg| Rapi.new(arg).download_txt }.compact.each do |f|
-  cmd = "java -jar #{txt2srt} #{"\"#{f}\""}"
-  puts cmd
-  `#{cmd}`
+if ARGV.include?('-srt')
+  # To convert from txt to srt You need a txt2src programm
+  txt2srt = "#{File.dirname(__FILE__)}/txt2srt-1.0.8.jar"
+  txt_files = ARGV.reject {|r| r =~ /-/}.map { |arg| Rapi.new(arg).download_txt }.compact.each do |f|
+    cmd = "java -jar #{txt2srt} #{"\"#{f}\""}"
+    puts cmd
+    `#{cmd}`
+  end
+  `rm #{txt_files.join(' ')}`
+else
+  ARGV.reject { |r| r =~ /^-/ }.each { |arg| Rapi.new(arg).download_txt }
 end
-`rm #{txt_files.join(' ')}`
+
