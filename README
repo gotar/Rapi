@@ -3,7 +3,12 @@ Rapi is a simple subtitle dowloader written in Ruby.
 Usage:
 
 ruby rapi.rb file_name
+ruby rapi.rb -srt file_name
 
 Dependency:
 
 p7zip
+
+Authors:
+- Oskar Gotar Szrajer
+- Artur Sevos Roszczyk
