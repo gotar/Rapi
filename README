@@ -1,0 +1,9 @@
+Rapi is a simple subtitle dowloader written in Ruby.
+
+Usage:
+
+ruby rapi.rb file_name
+
+Dependency:
+
+p7zip
