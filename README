@@ -2,8 +2,8 @@ Rapi is a simple subtitle dowloader written in Ruby. Based on Napi project and p
 
 Usage:
 
-ruby rapi.rb file_name
-ruby rapi.rb -srt file_name
+ruby rapi.rb file_name1 file_name2 ...
+ruby rapi.rb -srt ... #Auto convert from txt to srt after downloading
 
 Dependency:
 - ruby
