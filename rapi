@@ -3,7 +3,6 @@
 
 require "digest/md5"
 require "open-uri"
-require "pp"
 
 class Rapi
   def initialize avi_file_path
