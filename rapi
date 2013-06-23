@@ -4,6 +4,9 @@
 require "digest/md5"
 require "open-uri"
 
+PATH_TO_7ZIP = '/usr/bin/7z' # Linux
+# PATH_TO_7ZIP = '/usr/local/Cellar/p7zip/9.20.1/bin/7z' # OSX
+
 class Rapi
   def initialize avi_file_path
     @avi_file_path = avi_file_path
@@ -13,9 +16,10 @@ class Rapi
     File.open('napisy.7z','w') do |f|
       f.write(open(url).read)
     end
-    `/usr/bin/7z x -y -so -piBlm8NTigvru0Jr0 napisy.7z 2>/dev/null > "#{output_file('txt')}"`
+    `#{PATH_TO_7ZIP} x -y -so -piBlm8NTigvru0Jr0 napisy.7z 2>/dev/null > "#{output_file('txt')}"`
     `rm napisy.7z`
     if File.size?(output_file('txt')).nil?
+      File.unlink(output_file('txt'))
       puts "Nie można znaleźć napisów dla #{@avi_file_path}"
     else
       puts "Pobrano napisy dla #{@avi_file_path}"
@@ -24,19 +28,18 @@ class Rapi
   end
 
   private
-  
   def file_header
     File.open(@avi_file_path).read(10485760)
   end
-  
+
   def url
     "http://napiprojekt.pl/unit_napisy/dl.php?l=PL&f=#{digest}&t=#{rapi_digest(digest)}&v=other&kolejka=false&nick=&pass=&napios=posix"
   end
-  
+
   def digest
     Digest::MD5.hexdigest(file_header)
   end
-  
+
   def rapi_digest(z)
     idx = [ 0xe, 0x3,  0x6, 0x8, 0x2 ]
     mul = [   2,   2,    5,   4,   3 ]
@@ -54,7 +57,7 @@ class Rapi
     end
     return b.join('')
   end
-  
+
   def output_file(extension)
     "#{File.dirname(@avi_file_path)}/#{File.basename(@avi_file_path, @avi_file_path.split('.').last)}#{extension}"
   end
